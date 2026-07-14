@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Gestion du Parc Informatique - SRM Fès Meknès</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f5f7fa;
+    color:#222;
+}
+
+.layout{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:180px;
+    background:#17603a;
+    color:white;
+    padding:12px 15px;
+    min-height:100vh;
+}
+
+.sidebar .logo{
+    text-align:center;
+    margin-bottom:20px;
+    margin-top:5px;
+}
+
+.sidebar .logo img{
+    width: 130px;
+    height:130px;
+    margin-bottom:15px;
+    object-fit:contain;
+}
+
+.sidebar a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:white;
+    text-decoration:none;
+    padding:9px 12px;
+    font-size:14px;
+    margin-bottom:6px;
+    border-radius:8px;
+    transition:0.3s;
+}
+
+.sidebar a i{
+    width:22px;
+    font-size:18px;
+}
+
+.sidebar a:hover{
+    background:#c1121f;
+}
+.content{
+    flex:1;
+    padding:12px 18px;
+}
+
+header{
+    background:#ffffff;
+    border-radius:14px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    padding:12px 25px;
+    margin-bottom:15px;
+}
+
+.header-content{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.header-text{
+    text-align:center;
+}
+
+.header-text h1{
+    font-size:28px;
+    color:#222;
+    font-weight:700;
+    margin-bottom:4px;
+}
+
+.header-text p{
+    font-size:15px;
+    color:#666;
+}
+.container{
+    width:98%;
+    margin:auto;
+}
+
+.hero{
+    padding:8px 0 14px 0;
+    margin-bottom:12px;
+}
+
+.hero h2{
+    font-size:24px;
+    color:#1f5f3b;
+    font-weight:700;
+    margin-bottom:6px;
+}
+
+.hero p{
+    font-size:15px;
+    color:#666;
+    line-height:1.5;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-top:12px;
+    margin-bottom:18px;
+}
+.card{
+    background:#ffffff;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    padding:14px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-height:90px;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+}
+
+.card h2{
+    font-size:16px;
+    color:#222;
+    margin-bottom:4px;
+    font-weight:600;
+}
+
+.card h1{
+    font-size:28px;
+    color:#111;
+    margin:4px 0;
+}
+
+.card p{
+    font-size:13px;
+    color:#666;
+}
+.icon{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:22px;
+    flex-shrink:0;
+}
+
+.green{
+    background:#2E8B57;
+}
+
+.red{
+    background:#C1121F;
+}
+
+.card i{
+    color:white;
+}
+
+.presentation{
+    background:#ffffff;
+    border-radius:12px;
+    padding:15px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+.tables{
+    display:flex;
+    gap:15px;
+    margin-top:15px;
+    margin-bottom:15px;
+}
+
+.tables .presentation{
+    flex:1;
+}
+
+.presentation h2{
+    font-size:18px;
+    color:#222;
+    margin-bottom:12px;
+    font-weight:600;
+}
+
+.presentation table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.presentation th{
+    background:#f4f4f4;
+    color:#222;
+    font-size:14px;
+    font-weight:600;
+    padding:10px;
+    border-bottom:2px solid #dddddd;
+}
+
+.presentation td{
+    padding:9px;
+    text-align:center;
+    font-size:14px;
+    color:#444;
+    border-bottom:1px solid #eeeeee;
+}
+
+.presentation tr:hover{
+    background:#f9f9f9;
+}
+footer{
+    margin-top:20px;
+    background:#C1121F;
+    color:white;
+    text-align:center;
+    padding:12px;
+    border-radius:10px;
+    font-size:14px;
+}
+
+@media(max-width:1000px){
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .tables{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:170px;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .layout{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+    }
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .header-text h1{
+        font-size:24px;
+    }
+
+    .hero h2{
+        font-size:22px;
+    }
+
+}
+
+</style>
+
+</head>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<body>
+
+<div class="layout">
+
+<div class="sidebar">
+
+    <div class="logo">
+        <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo">
+    </div>
+
+   <a href="/accueil"><i class="fa-solid fa-house"></i> Accueil</a>
+   <a href="/utilisateurs"><i class="fa-solid fa-user"></i> Utilisateurs</a>
+   <a href="/ordinateur"><i class="fa-solid fa-laptop"></i> Ordinateurs</a>
+   <a href="/assistant"><i class="fa-solid fa-robot"></i> Assistance IA</a>
+   <a href="/export_pdf"><i class="fa-solid fa-file-pdf"></i> Export PDF</a>
+   <a href="/export_excel"><i class="fa-solid fa-table"></i> Export Excel</a>
+   <a href="/logout">
+    <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+</a>
+
+</div>
+
+<div class="content">
+
+
+<header>
+
+    <div class="header-content">
+
+        <div class="header-text">
+
+    <h1>Gestion du Parc Informatique</h1>
+
+    <p>Société Régionale Multiservices Fès-Meknès</p>
+</div>
+
+    </div>
+
+</header>
+
+
+
+<div class="container">
+
+    <section class="hero">
+
+        <h2>Bienvenue</h2>
+
+        <p>
+            Bienvenue dans l'application de gestion du parc informatique
+            de la Société Régionale Multiservices Fès-Meknès.
+        </p>
+
+    </section>
+
+    <div class="cards">
+
+    <div class="card">
+
+        <div class="icon green">
+            <i class="fa-solid fa-users"></i>
+        </div>
+
+        <div>
+
+            <h2>Utilisateurs</h2>
+
+            <h1>{{ nb_utilisateurs }}</h1>
+
+            <p>Nombre total des utilisateurs</p>
+
+        </div>
+
+    </div>
+<div class="card">
+
+    <div class="icon red">
+        <i class="fa-solid fa-computer"></i>
+    </div>
+
+    <div>
+
+        <h2>Ordinateurs</h2>
+
+        <h1>{{ nb_ordinateurs }}</h1>
+
+        <p>Nombre total des ordinateurs</p>
+
+    </div>
+
+</div>
+<div class="card">
+
+    <div class="icon green">
+        <i class="fa-solid fa-laptop"></i>
+    </div>
+
+    <div>
+
+        <h2>PC Portables</h2>
+
+        <h1>{{ nb_portable }}</h1>
+
+        <p>Ordinateurs portables</p>
+
+    </div>
+
+</div>
+<div class="card">
+
+    <div class="icon red">
+        <i class="fa-solid fa-desktop"></i>
+    </div>
+
+    <div>
+
+        <h2>PC Bureaux</h2>
+
+        <h1>{{ nb_bureau }}</h1>
+
+        <p>Ordinateurs de bureau</p>
+
+    </div>
+
+</div>
+
+</div>
+<div class="tables">
+
+    <!-- Derniers utilisateurs -->
+
+    <div class="presentation">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+
+            <h2>Derniers utilisateurs ajoutés</h2>
+
+            <a href="/tous_utilisateurs"
+               style="text-decoration:none;
+                      color:#C1121F;
+                      font-weight:bold;">
+
+                Voir tout →
+
+            </a>
+
+        </div>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Nom et Prénom</th>
+
+                    <th>Service</th>
+
+                    <th>Matricule</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+{% for u in derniers_utilisateurs %}
+
+<tr>
+
+    <td>{{ u[0] }}</td>
+
+    <td>{{ u[1] }}</td>
+
+    <td>{{ u[2] }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+<div class="presentation">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+
+        <h2>Derniers ordinateurs ajoutés</h2>
+
+        <a href="/tous_ordinateurs"
+           style="text-decoration:none;
+                  color:#2E8B57;
+                  font-weight:bold;">
+
+            Voir tout →
+
+        </a>
+
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Nom PC</th>
+
+                <th>Numéro de série</th>
+
+                <th>Type</th>
+
+                <th>Matricule</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+{% for o in derniers_ordinateurs %}
+
+<tr>
+
+    <td>{{ o[0] }}</td>
+
+    <td>{{ o[1] }}</td>
+
+    <td>{{ o[2] }}</td>
+
+    <td>{{ o[3] }}</td>
+
+</tr>
+
+{% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+    
+
+</div>
+
+<footer>
+
+    © 2026 - Société Régionale Multiservices Fès-Meknès
+
+</footer>
+
+</div>
+</div>
+
+</body>
+</html>

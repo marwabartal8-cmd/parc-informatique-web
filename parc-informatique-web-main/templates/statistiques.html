@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Statistiques</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+header{
+    background:linear-gradient(135deg,#c1121f,#2e7d32);
+    color:white;
+    text-align:center;
+    padding:30px;
+}
+
+.menu{
+    background:white;
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    padding:15px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.menu a{
+    text-decoration:none;
+    color:#333;
+    font-weight:bold;
+}
+
+.menu a:hover{
+    color:#c1121f;
+}
+
+.container{
+    width:90%;
+    margin:30px auto;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    align-items:stretch;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+    height:180px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.card h3{
+    color:#2e7d32;
+    margin-bottom:10px;
+}
+
+.card p{
+    font-size:30px;
+    font-weight:bold;
+    color:#c1121f;
+}
+
+.recherche{
+    margin-top:30px;
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,.1);
+}
+
+table{
+    width:100%;
+    margin-top:30px;
+    border-collapse:collapse;
+    background:white;
+    box-shadow:0 4px 15px rgba(0,0,0,.1);
+}
+
+th{
+    background:#2e7d32;
+    color:white;
+    padding:12px;
+}
+
+td{
+    padding:12px;
+    text-align:center;
+    border-bottom:1px solid #ddd;
+}
+
+footer{
+    margin-top:40px;
+    background:#c1121f;
+    color:white;
+    text-align:center;
+    padding:15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>📊 Statistiques</h1>
+
+<p>SRM Fès-Meknès</p>
+
+</header>
+
+<div class="menu">
+
+<a href="/">🏠 Accueil</a>
+<a href="/utilisateurs">👤 Utilisateurs</a>
+<a href="/ordinateur">💻 Ordinateurs</a>
+<a href="/statistiques">📊 Statistiques</a>
+
+</div>
+
+<div class="container">
+
+<div class="cards">
+
+<div class="card">
+<h3>👤 Utilisateurs</h3>
+<p>{{ nb_utilisateurs }}</p>
+</div>
+
+<div class="card">
+<h3>💻 Ordinateurs</h3>
+<p>{{ nb_ordinateurs }}</p>
+</div>
+
+<div class="card">
+<h3>🖥️ PC Bureau</h3>
+<p>{{ nb_bureau }}</p>
+</div>
+
+<div class="card">
+<h3>💼 PC Portable</h3>
+<p>{{ nb_portable }}</p>
+</div>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- Tableau Général -->
+<!-- ========================= -->
+
+<table>
+
+<tr>
+
+    <th>Nom</th>
+    <th>Prénom</th>
+    <th>Matricule</th>
+    <th>Service</th>
+    <th>Type PC</th>
+    <th>Nom PC</th>
+    <th>Numéro Série</th>
+
+</tr>
+
+{% for ligne in liste %}
+
+<tr>
+
+    <td>{{ ligne[0] }}</td>
+    <td>{{ ligne[1] }}</td>
+    <td>{{ ligne[2] }}</td>
+    <td>{{ ligne[3] }}</td>
+    <td>{{ ligne[4] }}</td>
+    <td>{{ ligne[5] }}</td>
+    <td>{{ ligne[6] }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+<!-- ========================= -->
+<!-- Boutons PDF et Excel -->
+<!-- ========================= -->
+
+<div style="margin-top:30px;text-align:center;">
+
+    <a href="/export_pdf">
+
+        <button style="
+        background:#c1121f;
+        color:white;
+        border:none;
+        padding:12px 20px;
+        border-radius:8px;
+        cursor:pointer;
+        margin-right:15px;">
+
+        📄 Exporter PDF
+
+        </button>
+
+    </a>
+
+    <a href="/export_excel">
+
+        <button style="
+        background:#2e7d32;
+        color:white;
+        border:none;
+        padding:12px 20px;
+        border-radius:8px;
+        cursor:pointer;">
+
+        📊 Exporter Excel
+
+        </button>
+
+    </a>
+
+</div>
+
+</div>
+
+<footer>
+
+© 2026 - SRM Fès-Meknès
+
+</footer>
+
+</body>
+
+</html>
