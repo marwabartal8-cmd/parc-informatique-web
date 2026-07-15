@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Export Excel</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f5f7fa;
+}
+
+.layout{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:240px;
+    background:#ffffff;
+    border-right:1px solid #e6e6e6;
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+    padding:20px 0;
+}
+
+.sidebar .logo{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.sidebar .logo h2{
+    color:#2E8B57;
+    font-size:20px;
+}
+
+.sidebar .logo h3{
+    color:#C1121F;
+    font-size:18px;
+}
+
+.sidebar .logo p{
+    color:#777;
+    font-size:13px;
+}
+
+.sidebar a{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    text-decoration:none;
+    color:#555;
+    padding:14px 22px;
+    margin:5px 15px;
+    border-radius:12px;
+    font-size:15px;
+    transition:.3s;
+}
+
+.sidebar a:hover{
+    background:#e8f5e9;
+    color:#2e7d32;
+}
+
+.sidebar a.active{
+    background:#2e7d32;
+    color:white;
+}
+
+.content{
+    flex:1;
+    padding:25px;
+}
+
+header{
+    background:white;
+    border-radius:16px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    margin-bottom:25px;
+}
+
+header h1{
+    font-size:38px;
+    font-weight:800;
+}
+
+header p{
+    color:#666;
+    margin-top:8px;
+}
+.card{
+    background:white;
+    border-radius:18px;
+    padding:40px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.card h2{
+    color:#2E8B57;
+    margin-bottom:20px;
+}
+
+.card p{
+    color:#666;
+    line-height:1.8;
+    font-size:16px;
+    margin-bottom:30px;
+}
+
+.btn-excel{
+    display:inline-block;
+    background:#2E8B57;
+    color:white;
+    text-decoration:none;
+    padding:14px 28px;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.btn-excel:hover{
+    background:#1f6d42;
+}
+
+footer{
+    margin-top:25px;
+    background:white;
+    padding:15px;
+    text-align:center;
+    border-radius:12px;
+    color:#666;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+<div class="sidebar">
+
+<div class="logo">
+
+<h2>Gestion du Parc</h2>
+
+<h3>Informatique</h3>
+
+<p>SRM Fès-Meknès</p>
+
+</div>
+
+<a href="/accueil">
+<i class="fa-solid fa-house"></i> Accueil
+</a>
+
+<a href="/utilisateurs">
+<i class="fa-solid fa-user"></i> Utilisateurs
+</a>
+
+<a href="/ordinateur">
+<i class="fa-solid fa-laptop"></i> Ordinateurs
+</a>
+
+<a href="/assistance">
+<i class="fa-solid fa-robot"></i> Assistance IA
+</a>
+
+<a href="/export_pdf">
+<i class="fa-solid fa-file-pdf"></i> Export PDF
+</a>
+
+<a href="/export_excel" class="active">
+<i class="fa-solid fa-file-excel"></i> Export Excel
+</a>
+
+<a href="/logout">
+<i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+</a>
+
+</div>
+
+<div class="content">
+<header>
+
+<h1>
+
+<span style="color:#2E8B57;">Export</span>
+
+<span style="color:#C1121F;">Excel</span>
+
+</h1>
+
+<p>Société Régionale Multiservices Fès-Meknès</p>
+
+</header>
+
+<div class="card">
+
+<h2>📊 Exportation des données Excel</h2>
+
+<p>
+
+Cette fonctionnalité permet d’exporter toutes les données
+des utilisateurs et des ordinateurs vers un fichier Excel
+(.xlsx) afin de faciliter la gestion, l’archivage et
+l’analyse des informations du parc informatique.
+
+</p>
+
+<a href="/telecharger_excel" class="btn-excel">
+
+📥 Télécharger Excel
+
+</a>
+
+</div>
+
+<footer>
+
+©️ 2026 - SRM Fès-Meknès
+
+</footer>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

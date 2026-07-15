@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Gestion des Ordinateurs</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f5f7fa;
+}
+
+.layout{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+
+    width:240px;
+
+    background:#ffffff;
+
+    border-right:1px solid #e6e6e6;
+
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+
+    padding:20px 0;
+
+}
+
+.sidebar .logo{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.sidebar h2{
+    color:white;
+    font-size:20px;
+    margin-bottom:5px;
+}
+
+.sidebar h3{
+    color:white;
+    font-size:17px;
+    margin-bottom:8px;
+}
+
+.sidebar p{
+    color:#dcdcdc;
+    font-size:13px;
+}
+
+.sidebar{
+    width:240px;
+    background:#ffffff;
+    border-right:1px solid #e6e6e6;
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+    padding:20px 0;
+}
+
+.sidebar a{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    text-decoration:none;
+    color:#555;
+    padding:14px 22px;
+    margin:5px 15px;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:500;
+    transition:.3s;
+}
+
+.sidebar a:hover{
+    background:#e8f5e9;
+    color:#2e7d32;
+}
+
+.sidebar a.active{
+    background:#2e7d32;
+    color:#ffffff;
+}
+.sidebar .logo{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.sidebar .logo h2{
+    color:#2E8B57;
+    font-size:20px;
+    font-weight:700;
+}
+
+.sidebar .logo h3{
+    color:#C1121F;
+    font-size:18px;
+    font-weight:700;
+}
+
+.sidebar .logo p{
+    color:#777;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.content{
+    flex:1;
+    padding:18px;
+}
+header{
+    background:#ffffff;
+    border-radius:16px;
+    padding:18px 25px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    margin-bottom:20px;
+}
+
+header h1{
+    font-size:30px;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:5px;
+    color:#222;
+}
+
+header p{
+    text-align:center;
+    color:#666;
+    font-size:15px;
+}
+
+.container{
+    width:100%;
+}
+
+.formulaire{
+    background:#ffffff;
+    border-radius:16px;
+    padding:25px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    margin-bottom:25px;
+}
+
+.formulaire h2{
+    color:#2E8B57;
+    font-size:22px;
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    margin:12px 0 6px;
+    font-weight:600;
+    color:#333;
+}
+
+input,
+select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:14px;
+    transition:.3s;
+}
+
+input:focus,
+select:focus{
+    border-color:#2E8B57;
+    box-shadow:0 0 8px rgba(46,139,87,.15);
+    outline:none;
+}
+
+button{
+    background:#2E8B57;
+    color:white;
+    border:none;
+    padding:12px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    margin-top:18px;
+    transition:.3s;
+}
+
+button:hover{
+    background:#1f6d42;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:#ffffff;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+th{
+    background:#f4f4f4;
+    color:#222;
+    padding:14px;
+    font-size:15px;
+    font-weight:600;
+    border-bottom:2px solid #e5e5e5;
+}
+
+td{
+    padding:12px;
+    text-align:center;
+    color:#444;
+    border-bottom:1px solid #eeeeee;
+}
+
+tr:hover{
+    background:#f9f9f9;
+}
+
+.action-btn{
+    display:inline-block;
+    text-decoration:none;
+    color:white;
+    padding:8px 14px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.modifier{
+    background:#2E8B57;
+}
+
+.modifier:hover{
+    background:#1f6d42;
+}
+
+.supprimer{
+    background:#C1121F;
+}
+
+.supprimer:hover{
+    background:#a30f1a;
+}
+
+footer{
+    margin-top:25px;
+    background:#ffffff;
+    color:#666;
+    text-align:center;
+    padding:15px;
+    border-radius:12px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    font-size:14px;
+}
+
+@media(max-width:1000px){
+
+    .layout{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        min-height:auto;
+    }
+
+    .content{
+        padding:15px;
+    }
+
+    table{
+        display:block;
+        overflow-x:auto;
+        white-space:nowrap;
+    }
+}
+
+@media(max-width:768px){
+
+    header h1{
+        font-size:24px;
+    }
+
+    .formulaire{
+        padding:18px;
+    }
+
+    button{
+        width:100%;
+    }
+}
+
+</style>
+
+</head>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<body>
+    <div class="layout">
+
+<div class="sidebar">
+
+    <div class="logo">
+
+    <h2>Gestion du Parc</h2>
+
+    <h3>Informatique</h3>
+
+    <p>SRM Fès-Meknès</p>
+
+</div>
+
+    <a href="/accueil">
+    <i class="fa-solid fa-house"></i> Accueil
+</a>
+
+<a href="/utilisateurs">
+    <i class="fa-solid fa-user"></i> Utilisateurs
+</a>
+
+<a href="/ordinateur" class="active">
+    <i class="fa-solid fa-laptop"></i> Ordinateurs
+</a>
+
+<a href="/assistance">
+    <i class="fa-solid fa-robot"></i> Assistance IA
+</a>
+
+<a href="/export_pdf">
+    <i class="fa-solid fa-file-pdf"></i> Export PDF
+</a>
+
+<a href="/export_excel">
+    <i class="fa-solid fa-file-excel"></i> Export Excel
+</a>
+
+<a href="/logout">
+    <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+</a>
+
+</div>
+
+<div class="content">
+
+
+<header>
+
+<h1> Gestion des Ordinateurs</h1>
+
+<p>SRM Fès-Meknès</p>
+
+</header>
+
+
+<div class="container">
+
+<div class="formulaire">
+
+<form method="POST">
+
+<h2>➕ Ajouter un ordinateur</h2>
+
+<label>Type d'ordinateur</label>
+
+<select name="type_ordinateur" required>
+
+    <option value="">-- Choisir --</option>
+
+    <option value="Bureau">PC Bureau</option>
+
+    <option value="Portable">PC Portable</option>
+
+</select>
+
+<label>Nom d'ordinateur</label>
+<input type="text" name="nom_ordinateur" required>
+
+<label>Numéro de série</label>
+<input type="text" name="numero_serie" required>
+
+<label>Matricule</label>
+<input type="text" name="matricule" required>
+
+<div class="boutons">
+
+<button type="submit">
+➕ Ajouter
+</button>
+
+</div>
+
+</form>
+
+</div>
+<div class="formulaire">
+    <h2>🔍 Recherche</h2>
+    <form method="GET">
+        
+        <input type="text"
+         name="recherche"
+         placeholder="Rechercher par numéro de série">
+         <button type="submit">
+            Rechercher
+        </button>
+    </form>
+</div>
+
+<br>
+<table>
+
+<tr>
+    <th>Type d'ordinateur</th>
+    <th>Nom d'ordinateur</th>
+    <th>Numéro de série</th>
+    <th>Matricule</th>
+    <th>Actions</th>
+</tr>
+
+{% for o in ordinateurs %}
+
+<tr>
+
+    <td>{{ o[1] }}</td>
+
+    <td>{{ o[2] }}</td>
+
+    <td>{{ o[3] }}</td>
+
+    <td>{{ o[4] }}</td>
+
+    <td>
+
+        <a class="action-btn modifier"
+           href="/modifier_ordinateur/{{ o[0] }}">
+            Modifier
+        </a>
+
+        |
+
+        <a class="action-btn supprimer"
+           href="/supprimer_ordinateur/{{ o[0] }}"
+           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet ordinateur ?')">
+             Supprimer
+        </a>
+
+    </td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+<footer>
+
+    © 2026 - SRM Fès-Meknès
+
+</footer>
+
+</body>
+
+</html>

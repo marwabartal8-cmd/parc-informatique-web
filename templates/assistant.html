@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Assistance IA</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f5f7fa;
+}
+
+.layout{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+
+    width:240px;
+
+    background:#ffffff;
+
+    border-right:1px solid #e6e6e6;
+
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+
+    padding:20px 0;
+
+}
+
+.sidebar .logo{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.sidebar h2{
+    color:white;
+    font-size:20px;
+    margin-bottom:5px;
+}
+
+.sidebar h3{
+    color:white;
+    font-size:17px;
+    margin-bottom:8px;
+}
+
+.sidebar p{
+    color:#dcdcdc;
+    font-size:13px;
+}
+
+.sidebar{
+    width:240px;
+    background:#ffffff;
+    border-right:1px solid #e6e6e6;
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+    padding:20px 0;
+}
+
+.sidebar a{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    text-decoration:none;
+    color:#555;
+    padding:14px 22px;
+    margin:5px 15px;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:500;
+    transition:.3s;
+}
+
+.sidebar a:hover{
+    background:#e8f5e9;
+    color:#2e7d32;
+}
+
+.sidebar a.active{
+    background:#2e7d32;
+    color:#ffffff;
+}
+.sidebar .logo{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.sidebar .logo h2{
+    color:#2E8B57;
+    font-size:20px;
+    font-weight:700;
+}
+
+.sidebar .logo h3{
+    color:#C1121F;
+    font-size:18px;
+    font-weight:700;
+}
+
+.sidebar .logo p{
+    color:#777;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.content{
+    flex:1;
+    padding:18px;
+    overflow:hidden;
+}
+header{
+    background:#ffffff;
+    border-radius:16px;
+    padding:18px 25px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    margin-bottom:20px;
+}
+
+header h1{
+    font-size:30px;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:5px;
+    color:#222;
+}
+
+header p{
+    text-align:center;
+    color:#666;
+    font-size:15px;
+}
+
+.container{
+    width:100%;
+}
+
+.formulaire{
+    background:#ffffff;
+    border-radius:16px;
+    padding:25px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    margin-bottom:25px;
+}
+
+.formulaire h2{
+    color:#2E8B57;
+    font-size:22px;
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    margin:12px 0 6px;
+    font-weight:600;
+    color:#333;
+}
+
+input,
+select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:14px;
+    transition:.3s;
+}
+
+input:focus,
+select:focus{
+    border-color:#2E8B57;
+    box-shadow:0 0 8px rgba(46,139,87,.15);
+    outline:none;
+}
+
+button{
+    background:#2E8B57;
+    color:white;
+    border:none;
+    padding:12px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    margin-top:18px;
+    transition:.3s;
+}
+
+button:hover{
+    background:#1f6d42;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:#ffffff;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+th{
+    background:#f4f4f4;
+    color:#222;
+    padding:14px;
+    font-size:15px;
+    font-weight:600;
+    border-bottom:2px solid #e5e5e5;
+}
+
+td{
+    padding:12px;
+    text-align:center;
+    color:#444;
+    border-bottom:1px solid #eeeeee;
+}
+
+tr:hover{
+    background:#f9f9f9;
+}
+
+.action-btn{
+    display:inline-block;
+    text-decoration:none;
+    color:white;
+    padding:8px 14px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+    transition:.3s;
+}
+
+
+footer{
+    margin-top:25px;
+    background:#ffffff;
+    color:#666;
+    text-align:center;
+    padding:15px;
+    border-radius:12px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    font-size:14px;
+}
+
+.chat-box{
+    background:#ffffff;
+    border-radius:16px;
+    padding:25px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.chat{
+    height:200px;
+    overflow-y:auto;
+    border:1px solid #e5e5e5;
+    border-radius:12px;
+    padding:15px;
+    background:#fafafa;
+    margin-bottom:15px;
+}
+
+.message-user{
+    display:flex;
+    justify-content:flex-end;
+    margin-bottom:12px;
+}
+
+.message-ai{
+    display:flex;
+    justify-content:flex-start;
+    margin-bottom:12px;
+}
+
+.bubble-user{
+    background:#2E8B57;
+    color:white;
+    padding:12px 16px;
+    border-radius:15px;
+    max-width:70%;
+}
+
+.bubble-ai{
+    background:white;
+    border:1px solid #dddddd;
+    padding:12px 16px;
+    border-radius:15px;
+    max-width:70%;
+}
+
+.footer-chat{
+    display:flex;
+    gap:10px;
+}
+
+.footer-chat input{
+    flex:1;
+}
+
+@media(max-width:1000px){
+
+    .layout{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        min-height:auto;
+    }
+
+    .content{
+        padding:15px;
+    }
+
+    table{
+        display:block;
+        overflow-x:auto;
+        white-space:nowrap;
+    }
+}
+
+@media(max-width:768px){
+
+    header h1{
+        font-size:24px;
+    }
+
+    .formulaire{
+        padding:18px;
+    }
+
+    button{
+        width:100%;
+    }
+}
+
+</style>
+
+</head>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<body>
+    <div class="layout">
+
+<div class="sidebar">
+
+ <div class="logo">
+
+    <h2>Gestion du Parc</h2>
+
+    <h3>Informatique</h3>
+
+    <p>SRM Fès-Meknès</p>
+
+</div>
+    
+
+    <a href="/accueil">
+    <i class="fa-solid fa-house"></i> Accueil
+</a>
+
+<a href="/utilisateurs">
+    <i class="fa-solid fa-user"></i> Utilisateurs
+</a>
+
+<a href="/ordinateur">
+    <i class="fa-solid fa-laptop"></i> Ordinateurs
+</a>
+
+<a href="/assistance" class="active">
+    <i class="fa-solid fa-robot"></i> Assistance IA
+</a>
+
+<a href="/export_pdf">
+    <i class="fa-solid fa-file-pdf"></i> Export PDF
+</a>
+
+<a href="/export_excel">
+    <i class="fa-solid fa-file-excel"></i> Export Excel
+</a>
+
+<a href="/logout">
+    <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+</a>
+
+</div>
+
+
+
+
+
+<div class="container">
+    <header>
+
+<h1>Assistance IA</h1>
+
+<p>SRM Fès-Meknès</p>
+
+</header>
+<div class="content">
+
+
+
+<div class="container">
+
+<div class="chat-box">
+
+<h2 style="color:#c1121f;margin-bottom:20px;">
+🤖 Assistant Intelligent
+</h2>
+<div style="text-align:right;margin-bottom:15px;">
+
+    <a href="/clear" class="new-chat">
+
+         Nouvelle conversation
+
+    </a>
+
+</div>
+
+<div class="chat" id="chat">
+    {% if conversation|length == 0 %}
+
+<div class="message-ai">
+    <div class="bubble-ai">
+        Bonjour 👋<br>
+        Comment puis-je vous aider ?
+    </div>
+</div>
+
+{% endif %}
+
+{% for msg in conversation %}
+
+{% if msg.role=="user" %}
+
+<div class="message-user">
+    <div class="bubble-user">
+        {{ msg.text }}
+    </div>
+</div>
+
+{% else %}
+
+<div class="message-ai">
+    <div class="bubble-ai">
+        {{ msg.text|safe }}
+    </div>
+</div>
+
+{% endif %}
+
+{% endfor %}
+
+</div>
+
+<form method="POST">
+
+<div class="footer-chat">
+
+<input
+type="text"
+name="question"
+placeholder="Écrivez votre question..."
+required>
+
+<button type="submit">
+
+Envoyer
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<footer>
+
+© 2026 - SRM Fès-Meknès
+
+</footer>
+<script>
+
+window.onload = function() {
+
+    var chat = document.getElementById("chat");
+
+    if(chat){
+        chat.scrollTop = chat.scrollHeight;
+    }
+
+}
+
+</script>
+
+</div>

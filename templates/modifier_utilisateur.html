@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<title>Modifier Utilisateur</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+.container{
+    width:50%;
+    margin:40px auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+h2{
+    color:#c1121f;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    margin-top:15px;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+input,
+select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+   
+}
+
+button{
+    width:100%;
+    margin-top:25px;
+    padding:12px;
+    border:none;
+    background:#f39c12;
+    color:white;
+    font-size:16px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#d68910;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<form method="POST">
+
+<h2>✏️ Modifier un utilisateur</h2>
+
+<label>Nom et Prénom</label>
+<input
+type="text"
+name="nom_prenom"
+value="{{ utilisateur[1] }}"
+required>
+
+
+<label>Matricule</label>
+<input
+type="text"
+name="matricule"
+value="{{ utilisateur[2] }}"
+required>
+
+<label>Service</label>
+
+<select name="service" required>
+
+<option value="Service informatique">Service informatique</option>
+<option value="Ressource humaine">Ressource humaine</option>
+<option value="Comptabilité">Comptabilité</option>
+<option value="Achat et logistique">Achat et logistique</option>
+<option value="Assainissement">Assainissement</option>
+<option value="Eau potable">Eau potable</option>
+<option value="Clientèle">Clientèle</option>
+<option value="Audit et contrôle">Audit et contrôle</option>
+
+</select>
+
+<button type="submit">
+💾 Enregistrer les modifications
+</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

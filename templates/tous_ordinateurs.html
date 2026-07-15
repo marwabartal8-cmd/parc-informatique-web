@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tous les ordinateurs</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+.container{
+    width:90%;
+    margin:30px auto;
+}
+
+h1{
+    text-align:center;
+    color:#2e7d32;
+    margin-bottom:25px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+th{
+    background:#2e7d32;
+    color:white;
+    padding:12px;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    text-align:center;
+}
+
+tr:hover{
+    background:#f8f8f8;
+}
+.retour{
+    display:block;
+    width:220px;
+    margin:25px auto;
+    text-align:center;
+    background:#c1121f;
+    color:white;
+    text-decoration:none;
+    padding:12px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.retour:hover{
+    background:#a50f1a;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Liste complète des ordinateurs</h1>
+
+<table>
+
+<tr>
+
+    <th>Type d'ordinateur</th>
+    <th>Nom d'ordinateur</th>
+    <th>Numéro de série</th>
+    <th>Matricule</th>
+
+</tr>
+
+{% for o in ordinateurs %}
+
+<tr>
+
+    <td>{{ o[0] }}</td>
+    <td>{{ o[1] }}</td>
+    <td>{{ o[2] }}</td>
+    <td>{{ o[3] }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<a href="/accueil" class="retour">
+    ⬅ Retour à l'accueil
+</a>
+
+</div>
+
+</body>
+
+</html>
