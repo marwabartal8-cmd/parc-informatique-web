@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f4f6f9;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .container{
+            width:900px;
+            height:500px;
+            background:white;
+            display:flex;
+            border-radius:15px;
+            overflow:hidden;
+            box-shadow:0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .left{
+            width:45%;
+            background:#e8f5e9;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .left img{
+            width:320px;
+            max-width:90%;
+        }
+
+        .right{
+            width:55%;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .login-box{
+            width:330px;
+        }
+
+        h2{
+            text-align:center;
+            color:#2e7d32;
+            margin-bottom:10px;
+        }
+
+        h3{
+            text-align:center;
+            color:#666;
+            margin-bottom:30px;
+            font-weight:normal;
+        }
+
+        input{
+            width:100%;
+            padding:12px;
+            margin:10px 0;
+            border:1px solid #ccc;
+            border-radius:8px;
+            font-size:15px;
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            background:#2e7d32;
+            color:white;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        button:hover{
+            background:#1b5e20;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="left">
+
+        <img src="{{ url_for('static', filename='logo.jpg') }}">
+
+    </div>
+
+    <div class="right">
+
+        <div class="login-box">
+
+            <h2>Gestion du Parc Informatique</h2>
+
+            <h3>
+                Société Régionale Multiservices (SRM)
+            </h3>
+
+            <form method="POST">
+                {% if erreur %}
+                <p style="color:red;
+                          text-align:center;
+                          margin-bottom:15px;">
+                    {{ erreur }}
+                </p>
+                {% endif %}
+
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Nom d'utilisateur"
+                    required>
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Mot de passe"
+                    required>
+
+                <button type="submit">
+                    Se connecter
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

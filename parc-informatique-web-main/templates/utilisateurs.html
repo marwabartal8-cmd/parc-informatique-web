@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Gestion des Utilisateurs</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f5f7fa;
+}
+
+.layout{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:160px;
+    background:#17603a;
+    color:white;
+    padding:12px 15px;
+}
+
+.sidebar .logo{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.sidebar .logo img{
+    width:130px;
+    height:130px;
+    object-fit:contain;
+}
+
+.sidebar a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:white;
+    text-decoration:none;
+    padding:9px 12px;
+    font-size:14px;
+    margin-bottom:6px;
+    border-radius:8px;
+    transition:.3s;
+}
+
+.sidebar a:hover{
+    background:#c1121f;
+}
+
+.content{
+    flex:1;
+    padding:15px;
+}
+
+header{
+    background:white;
+    padding:15px 25px;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,.08);
+    margin-bottom:20px;
+    text-align:center;
+}
+
+header h1{
+    color:#222;
+    font-size:30px;
+}
+
+header p{
+    color:#666;
+    margin-top:5px;
+}
+
+.container{
+    width:100%;
+}
+
+.formulaire{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    margin-bottom:20px;
+}
+
+.formulaire h2{
+    color:#c1121f;
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    margin-top:12px;
+    margin-bottom:5px;
+    font-weight:600;
+    color:#333;
+}
+
+input,
+select{
+    width:100%;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    outline:none;
+}
+
+input:focus,
+select:focus{
+    border-color:#2e7d32;
+}
+
+button{
+    background:#2e7d32;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    margin-top:15px;
+}
+
+button:hover{
+    opacity:.9;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+th{
+    background:#184b30;
+    color:white;
+    padding:12px;
+}
+
+td{
+    padding:12px;
+    text-align:center;
+    border-bottom:1px solid #eee;
+}
+
+tr:hover{
+    background:#f8f8f8;
+}
+
+.action-btn{
+    text-decoration:none;
+    padding:6px 10px;
+    border-radius:6px;
+    font-size:13px;
+    color:white;
+}
+
+.modifier{
+    background:#2e7d32;
+}
+
+.supprimer{
+    background:#c1121f;
+}
+
+footer{
+    margin-top:20px;
+    background:#c1121f;
+    color:white;
+    text-align:center;
+    padding:15px;
+    border-radius:10px;
+}
+
+</style>
+</head>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<body>
+
+<div class="layout">
+
+<div class="sidebar">
+
+    <div class="logo">
+        <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Logo">
+    </div>
+
+    <a href="/accueil">
+    <i class="fa-solid fa-house"></i> Accueil
+</a>
+
+<a href="/utilisateurs">
+    <i class="fa-solid fa-user"></i> Utilisateurs
+</a>
+
+<a href="/ordinateur">
+    <i class="fa-solid fa-laptop"></i> Ordinateurs
+</a>
+
+<a href="/assistant">
+    <i class="fa-solid fa-robot"></i> Assistance IA
+</a>
+
+<a href="/export_pdf">
+    <i class="fa-solid fa-file-pdf"></i> Export PDF
+</a>
+
+<a href="/export_excel">
+    <i class="fa-solid fa-file-excel"></i> Export Excel
+</a>
+
+<a href="/logout">
+    <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+</a>
+
+</div>
+
+<div class="content">
+
+<header>
+
+    <h1>Gestion des Utilisateurs</h1>
+
+    <p>
+        SRM Fès-Meknès
+    </p>
+
+</header>
+
+<div class="container">
+
+    <div class="formulaire">
+
+        <form method="POST">
+
+            <h2>➕ Ajouter un utilisateur</h2>
+
+            <label>Nom et Prénom</label>
+
+            <input
+                type="text"
+                name="nom_prenom"
+                placeholder=""
+                required>
+
+            <label>Matricule</label>
+
+            <input
+                type="text"
+                name="matricule"
+                placeholder=""
+                required>
+
+            <label>Service</label>
+
+            <select name="service" required>
+
+                <option value="">
+                    Choisir un service
+                </option>
+
+                <option value="Service informatique">
+                    Service informatique
+                </option>
+
+                <option value="Ressource humaine">
+                    Ressource humaine
+                </option>
+
+                <option value="Comptabilité">
+                    Comptabilité
+                </option>
+
+                <option value="Achat et logistique">
+                    Achat et logistique
+                </option>
+
+                <option value="Assainissement">
+                    Assainissement
+                </option>
+
+                <option value="Eau potable">
+                    Eau potable
+                </option>
+
+                <option value="Clientèle">
+                    Clientèle
+                </option>
+
+                <option value="Audit et contrôle">
+                    Audit et contrôle
+                </option>
+
+            </select>
+
+            <button type="submit">
+                ➕ Ajouter
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="formulaire">
+
+        <h2>🔍 Recherche</h2>
+
+        <form method="GET">
+
+            <input
+                type="text"
+                name="recherche"
+                placeholder="Rechercher par matricule">
+
+            <button type="submit">
+                Rechercher
+            </button>
+
+        </form>
+
+    </div>
+
+<br>
+
+<table>
+
+    <tr>
+
+        <th>Nom et Prénom</th>
+        <th>Matricule</th>
+        <th>Service</th>
+        <th>Actions</th>
+
+    </tr>
+
+    {% for u in utilisateurs %}
+
+    <tr>
+
+        <td>{{ u[1] }}</td>
+
+        <td>{{ u[2] }}</td>
+
+        <td>{{ u[3] }}</td>
+
+        <td>
+
+            <a
+                href="/modifier_utilisateur/{{ u[0] }}"
+                class="action-btn modifier">
+
+                Modifier
+
+            </a>
+
+            <a
+                href="/supprimer_utilisateur/{{ u[0] }}"
+                class="action-btn supprimer"
+                onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">
+
+                Supprimer
+
+            </a>
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+</div>
+
+<footer>
+    © 2026 - SRM Fès-Meknès
+</footer>
+
+</body>
+</html>

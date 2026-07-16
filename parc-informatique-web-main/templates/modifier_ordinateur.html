@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Modifier Ordinateur</title>
+
+<style>
+
+body{
+    background:#f4f6f9;
+    font-family:Arial,sans-serif;
+}
+
+.container{
+    width:50%;
+    margin:40px auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+h2{
+    text-align:center;
+    color:#c1121f;
+}
+
+label{
+    display:block;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+input,
+select{
+    width:100%;
+    height:48px;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+    background:white;
+}
+
+button{
+    margin-top:20px;
+    width:100%;
+    padding:12px;
+    border:none;
+    background:#f39c12;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<form method="POST">
+
+<h2>✏️ Modifier un ordinateur</h2>
+
+<label>Type d'ordinateur</label>
+
+<select name="type_ordinateur" required>
+
+    <option value="">-- Choisir --</option>
+
+    <option value="Bureau"
+    {% if ordinateur[1] == "Bureau" %}selected{% endif %}>
+        PC Bureau
+    </option>
+
+    <option value="Portable"
+    {% if ordinateur[1] == "Portable" %}selected{% endif %}>
+        PC Portable
+    </option>
+
+</select>
+
+<label>Nom d'ordinateur</label>
+<input type="text"
+       name="nom_ordinateur"
+       value="{{ ordinateur[2] }}"
+       required>
+
+<label>Numéro de série</label>
+<input type="text"
+       name="numero_serie"
+       value="{{ ordinateur[3] }}"
+       required>
+
+<label>Matricule</label>
+<input type="text"
+       name="matricule"
+       value="{{ ordinateur[4] }}"
+       required>
+
+<button type="submit">
+💾 Enregistrer les modifications
+</button>
+
+</form>
+
+</div>
+
+</body>
+</html>
