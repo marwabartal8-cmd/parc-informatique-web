@@ -444,13 +444,6 @@ def logout():
 # -----------------------------
 # Export PDF
 # -----------------------------
-@app.route("/export_pdf")
-def export_pdf():
-
-    if "user" not in session:
-        return redirect("/")
-
-    return render_template("export_pdf.html")
 @app.route("/telecharger_pdf")
 def telecharger_pdf():
 
@@ -478,76 +471,47 @@ def telecharger_pdf():
 
     conn.close()
 
-    wb = Workbook()
-    ws = wb.active
-
-    ws.title = "Parc Informatique"
-
-    headers = [
-        "Nom et prenom",
+    data = [[
+        "Nom et prénom",
         "Matricule",
         "Service",
         "Type PC",
         "Nom PC",
-        "Numero Serie"
-    ]
-
-    ws.append(headers)
+        "Numéro Série"
+    ]]
 
     for ligne in donnees:
-        ws.append(ligne)
-    header_fill = PatternFill(
-        start_color="2E7D32",
-        end_color="2E7D32",
-        fill_type="solid"
-    )
-
-    header_font = Font(
-        color="FFFFFF",
-        bold=True
-    )
-
-    border = Border(
-        left=Side(style="thin"),
-        right=Side(style="thin"),
-        top=Side(style="thin"),
-        bottom=Side(style="thin")
-    )
-
-    for cell in ws[1]:
-        cell.fill = header_fill
-        cell.font = header_font
-        cell.border = border
-
-    for row in ws.iter_rows():
-        for cell in row:
-            cell.border = border
-
-    for column in ws.columns:
-
-        max_length = 0
-        column_letter = column[0].column_letter
-
-        for cell in column:
-            try:
-                if len(str(cell.value)) > max_length:
-                    max_length = len(str(cell.value))
-            except:
-                pass
-
-        ws.column_dimensions[column_letter].width = max_length + 5
+        data.append(list(ligne))
 
     fichier = tempfile.NamedTemporaryFile(
         delete=False,
-        suffix=".xlsx"
+        suffix=".pdf"
     ).name
 
-    wb.save(fichier)
+    pdf = SimpleDocTemplate(fichier)
+
+    table = Table(data)
+
+    table.setStyle(TableStyle([
+
+        ('BACKGROUND', (0, 0), (-1, 0), colors.green),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER')
+
+    ]))
+
+    pdf.build([table])
 
     return send_file(
         fichier,
         as_attachment=True,
-        download_name="rapport_parc_informatique.xlsx"
+        download_name="rapport_parc_informatique.pdf",
+        mimetype="application/pdf"
     )
 # -----------------------------
 # Export Excel
@@ -1120,3 +1084,6 @@ def clear():
 # -----------------------------
 if __name__ == "__main__":
     app.run(debug=True)
+@app.route("/testpdf")
+def testpdf():
+    return "PDF OK"
