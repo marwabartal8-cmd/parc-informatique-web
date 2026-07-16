@@ -738,427 +738,369 @@ def assistance():
 
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
-        # nombre utilisateurs
-        if "combien" in question and "utilisateur" in question:
 
+
+# ==========================
+# NOMBRE D'UTILISATEURS
+# ==========================
+
+        if (
+            "combien" in question
+            and "utilisateur" in question
+            and "service" not in question
+            ):
             cursor.execute("SELECT COUNT(*) FROM utilisateurs")
-
             nb = cursor.fetchone()[0]
-
             reponse = f"Il y a {nb} utilisateurs."
 
 
-        # nombre ordinateurs
+# ==========================
+# NOMBRE D'ORDINATEURS
+# ==========================
         elif "combien" in question and "ordinateur" in question:
-
             cursor.execute("SELECT COUNT(*) FROM ordinateurs")
-
             nb = cursor.fetchone()[0]
-
             reponse = f"Il y a {nb} ordinateurs."
 
 
-        # liste utilisateurs
-        elif "liste" in question and "utilisateur" in question:
+# ==========================
+# LISTE DES UTILISATEURS
+# ==========================
 
+        elif "liste" in question and "utilisateur" in question:
             cursor.execute("""
             SELECT nom_prenom
-            FROM utilisateurs
-            """)
-
+        FROM utilisateurs
+        ORDER BY nom_prenom
+    """)
             resultat = cursor.fetchall()
+            if resultat:
+                 reponse = "Liste des utilisateurs :<br><br>"
+                 for r in resultat:
+                    reponse += f"• {r[0]}<br>"
+            else:
+                reponse = "Aucun utilisateur trouvé."
 
-            reponse = "Liste des utilisateurs :<br><br>"
 
-            for r in resultat:
+# ==========================
+# LISTE DES ORDINATEURS
+# ==========================
 
-                reponse += f"• {r[0]}<br>"
-
-
-        # liste ordinateurs
         elif "liste" in question and "ordinateur" in question:
-
             cursor.execute("""
-            SELECT nom_ordinateur
-            FROM ordinateurs
-            """)
-
+        SELECT nom_ordinateur
+        FROM ordinateurs
+        ORDER BY nom_ordinateur
+    """)
             resultat = cursor.fetchall()
-
-            reponse = "Liste des ordinateurs :<br><br>"
-
-            for r in resultat:
-
-                reponse += f"• {r[0]}<br>"
-        # matricule de utilisateur
-        elif "matricule de" in question:
-
-            cursor.execute("""
-            SELECT nom_prenom, matricule
-            FROM utilisateurs
-            """)
-
-            utilisateurs = cursor.fetchall()
-
-            trouve = False
-
-            for u in utilisateurs:
-
-                if u[0] and u[0].lower() in question:
-
-                    reponse = f"La matricule de {u[0]} est {u[1]}."
-                    trouve = True
-                    break
-
-            if not trouve:
-
-                reponse = "Utilisateur introuvable."
-
-
-        # à qui appartient la matricule
-        elif "matricule" in question:
-
-            cursor.execute("""
-            SELECT nom_prenom, matricule
-            FROM utilisateurs
-            """)
-
-            utilisateurs = cursor.fetchall()
-
-            trouve = False
-
-            for u in utilisateurs:
-
-                if str(u[1]) in question:
-
-                    reponse = f"La matricule {u[1]} appartient à {u[0]}."
-                    trouve = True
-                    break
-
-            if not trouve:
-
-                reponse = "Matricule introuvable."
-
-
-
-
-        # service avec le plus d'utilisateurs
-        elif "plus d'utilisateurs" in question:
-
-            cursor.execute("""
-            SELECT service, COUNT(*) as nb
-            FROM utilisateurs
-            GROUP BY service
-            ORDER BY nb DESC
-            LIMIT 1
-            """)
-
-            resultat = cursor.fetchone()
 
             if resultat:
 
-                reponse = f"Le service {resultat[0]} contient le plus d'utilisateurs avec {resultat[1]} personne(s)."
+                reponse = "Liste des ordinateurs :<br><br>"
+                for r in resultat:
+                    reponse += f"• {r[0]}<br>"
+                else:
+                     reponse = "Aucun ordinateur trouvé."
+# ==========================
+# MATRICULE D'UN UTILISATEUR
+# ==========================
 
+        elif "matricule de" in question:
+            cursor.execute("""
+        SELECT nom_prenom, matricule
+        FROM utilisateurs
+    """)
+            utilisateurs = cursor.fetchall()
+            trouve = False
+            for u in utilisateurs:
+                if u[0] and u[0].lower() in question:
+                    reponse = f"La matricule de {u[0]} est {u[1]}."
+                    trouve = True
+                    break
+            if not trouve:
+                    reponse = "Utilisateur introuvable."
+
+
+# ==========================
+# À QUI APPARTIENT LA MATRICULE
+# ==========================
+
+        elif "matricule" in question:
+            cursor.execute("""
+        SELECT nom_prenom, matricule
+        FROM utilisateurs
+    """)
+            utilisateurs = cursor.fetchall()
+            trouve = False
+            for u in utilisateurs:
+                if str(u[1]) in question:
+                    reponse = f"La matricule {u[1]} appartient à {u[0]}."
+                    trouve = True
+                    break
+            if not trouve:
+                    reponse = "Matricule introuvable."
+
+
+# ==========================
+# INFORMATIONS SUR UN UTILISATEUR
+# ==========================
+
+        elif "informations sur" in question:
+            cursor.execute("""
+        SELECT nom_prenom, matricule, service
+        FROM utilisateurs
+    """)
+            utilisateurs = cursor.fetchall()
+            trouve = False
+            for u in utilisateurs:
+                 if u[0] and u[0].lower() in question:
+                    reponse = (
+                    f"Nom : {u[0]}<br>"
+                f"Matricule : {u[1]}<br>"
+                f"Service : {u[2]}"
+                )
+                    trouve = True
+                    break
+            if not trouve:
+                     reponse = "Utilisateur introuvable."
+# ==========================
+# COMBIEN DE SERVICES
+# ==========================
+
+        elif "combien de services" in question or "nombre de services" in question:
+
+            cursor.execute("""
+        SELECT COUNT(DISTINCT service)
+        FROM utilisateurs
+    """)
+            nb = cursor.fetchone()[0]
+            reponse = f"Il existe {nb} service(s)."
+
+
+# ==========================
+# SERVICE AVEC LE PLUS D'UTILISATEURS
+# ==========================
+
+        elif "plus d'utilisateurs" in question:
+            cursor.execute("""
+        SELECT service, COUNT(*) AS nb
+        FROM utilisateurs
+        GROUP BY service
+        ORDER BY nb DESC
+        LIMIT 1
+    """)
+            resultat = cursor.fetchone()
+            if resultat:
+                reponse = f"Le service {resultat[0]} contient le plus d'utilisateurs avec {resultat[1]} utilisateur(s)."
             else:
                 reponse = "Aucune donnée disponible."
 
 
-        # service utilisateur
-        elif "service" in question:
+# ==========================
+# COMBIEN D'UTILISATEURS DANS UN SERVICE
+# ==========================
 
-            cursor.execute("""
-            SELECT nom_prenom, service
-            FROM utilisateurs
-            """)
-
-            utilisateurs = cursor.fetchall()
-
-            trouve = False
-
-            for u in utilisateurs:
-
-                if u[0] and u[0].lower() in question:
-
-                    reponse = f"{u[0]} travaille dans le service {u[1]}."
-                    trouve = True
-                    break
-
-            if not trouve:
-
-                reponse = "Utilisateur introuvable."
-        # combien d'utilisateurs dans un service
         elif (
             ("combien" in question or "effectif" in question)
             and "service" in question
-        ):
-
+            ):
             cursor.execute("""
-            SELECT DISTINCT service
-            FROM utilisateurs
-            """)
-
+                           SELECT DISTINCT service
+                           FROM utilisateurs
+                           """)
             services = cursor.fetchall()
-
             service_trouve = None
-
             for s in services:
-
                 if s[0] and s[0].lower() in question:
-
                     service_trouve = s[0]
                     break
-
             if service_trouve:
-
                 cursor.execute("""
-                SELECT COUNT(*)
-                FROM utilisateurs
-                WHERE LOWER(service)=?
-                """, (service_trouve.lower(),))
-
+                                   SELECT COUNT(*)
+                                   FROM utilisateurs
+                                    WHERE LOWER(service)=?
+                                   """, (service_trouve.lower(),))
                 nb = cursor.fetchone()[0]
-
-                reponse = f"Il y a {nb} utilisateur(s) dans le service {service_trouve}."
-
+                reponse = f"Le service {service_trouve} contient {nb} utilisateur(s)."
             else:
+                    reponse = "Service introuvable."
 
-                reponse = "Service introuvable."
 
+# ==========================
+# SERVICE D'UN UTILISATEUR
+# ==========================
 
-        # utilisateurs d'un service
-        elif "travaille" in question or "service" in question:
+        elif "service" in question and "utilisateur" not in question:
 
             cursor.execute("""
-            SELECT DISTINCT service
-            FROM utilisateurs
-            """)
-
-            services = cursor.fetchall()
-
-            service_trouve = None
-
-            for s in services:
-
-                if s[0] and s[0].lower() in question:
-
-                    service_trouve = s[0]
-                    break
-
-            if service_trouve:
-
-                cursor.execute("""
-                SELECT nom_prenom
-                FROM utilisateurs
-                WHERE LOWER(service)=?
-                """, (service_trouve.lower(),))
-
-                resultat = cursor.fetchall()
-
-                if resultat:
-
-                    reponse = f"Utilisateurs du service {service_trouve} :<br><br>"
-
-                    for r in resultat:
-
-                        reponse += f"• {r[0]}<br>"
-
-                else:
-
-                    reponse = f"Aucun utilisateur associé au service {service_trouve}."
-
-            else:
-
-                reponse = "Service introuvable."
-
-        # quel ordinateur utilise un utilisateur
-        elif "ordinateur" in question and "utilise" in question:
-            cursor.execute("""
-            SELECT nom_prenom, matricule
-            FROM utilisateurs
-            """)
+        SELECT nom_prenom, service
+        FROM utilisateurs
+    """)
             utilisateurs = cursor.fetchall()
             trouve = False
             for u in utilisateurs:
                 if u[0] and u[0].lower() in question:
+                    reponse = f"{u[0]} travaille dans le service {u[1]}."
+                    trouve = True
+                    break
+            if not trouve:
+                    reponse = "Utilisateur introuvable."
+
+
+# ==========================
+# UTILISATEURS D'UN SERVICE
+# ==========================
+
+        elif "travaille" in question:
+
+            cursor.execute("""
+        SELECT DISTINCT service
+        FROM utilisateurs
+    """)
+            services = cursor.fetchall()
+            service_trouve = None
+            for s in services:
+                if s[0] and s[0].lower() in question:
+                    service_trouve = s[0]
+                    break
+                if service_trouve:
                     cursor.execute("""
-                                   SELECT nom_ordinateur
-                                   FROM ordinateurs
-                                   WHERE matricule=?
-                                   """, (u[1],))
+            SELECT nom_prenom
+            FROM utilisateurs
+            WHERE LOWER(service)=?
+                                       """, (service_trouve.lower(),))
+                    resultat = cursor.fetchall()
+                    if resultat:
+                        reponse = f"Utilisateurs du service {service_trouve} :<br><br>"
+                        for r in resultat:
+                            reponse += f"• {r[0]}<br>"
+                        else:
+                            reponse = f"Aucun utilisateur dans le service {service_trouve}."
+                    else:
+                        reponse = "Service introuvable."
+# ==========================
+# QUEL ORDINATEUR UTILISE UN UTILISATEUR
+# ==========================
+
+        elif "ordinateur" in question and "utilise" in question:
+
+            cursor.execute("""
+        SELECT nom_prenom, matricule
+        FROM utilisateurs
+    """)
+            utilisateurs = cursor.fetchall()
+            trouve = False
+            for u in utilisateurs:
+                if u[0] and u[0].lower() in question:
+                    trouve = True
+                    cursor.execute("""
+                SELECT nom_ordinateur
+                FROM ordinateurs
+                WHERE matricule=?
+            """, (u[1],))
                     ordinateur = cursor.fetchone()
                     if ordinateur:
                         reponse = f"{u[0]} utilise l'ordinateur {ordinateur[0]}."
                     else:
                         reponse = f"{u[0]} n'a pas d'ordinateur attribué."
-                        trouve = True
                         break
             if not trouve:
-                reponse = "Utilisateur introuvable."
+                        reponse = "Utilisateur introuvable."
 
 
+# ==========================
+# QUI UTILISE UN ORDINATEUR
+# ==========================
 
-         # type d'ordinateur
-        elif "type" in question and "ordinateur" in question:
+        elif "qui utilise" in question and "ordinateur" in question:
 
             cursor.execute("""
-            SELECT nom_ordinateur, type_ordinateur
-            FROM ordinateurs
-            """)
-
+        SELECT nom_ordinateur, matricule
+        FROM ordinateurs
+    """)
             ordinateurs = cursor.fetchall()
-
             trouve = False
-
             for o in ordinateurs:
-
                 if o[0] and o[0].lower() in question:
-
-                    reponse = f"L'ordinateur {o[0]} est de type {o[1]}."
                     trouve = True
-                    break
-
-            if not trouve:
-
-                reponse = "Ordinateur introuvable."
-
-
-
-
-        # qui utilise un ordinateur
-        elif "ordinateur" in question:
-
-            cursor.execute("""
-            SELECT nom_ordinateur, matricule
-            FROM ordinateurs
-            """)
-
-            ordinateurs = cursor.fetchall()
-
-            ordinateur_trouve = None
-
-            for o in ordinateurs:
-
-                if o[0] and o[0].lower() in question:
-
-                    ordinateur_trouve = o
-                    break
-
-            if ordinateur_trouve:
-
-                cursor.execute("""
+                    cursor.execute("""
                 SELECT nom_prenom
                 FROM utilisateurs
                 WHERE matricule=?
-                """, (ordinateur_trouve[1],))
-
-                utilisateur = cursor.fetchone()
-
-                if utilisateur:
-
-                    reponse = f"L'ordinateur {ordinateur_trouve[0]} est utilisé par {utilisateur[0]}."
-
-                else:
-
-                    reponse = "Aucun utilisateur associé à cet ordinateur."
-
-            else:
-
-                reponse = "Ordinateur introuvable."
+            """, (o[1],))
+                    utilisateur = cursor.fetchone()
+                    if utilisateur:
+                        reponse = f"L'ordinateur {o[0]} est utilisé par {utilisateur[0]}."
+                    else:
+                        reponse = "Aucun utilisateur associé."
+                        break
+                    if not trouve:
+                        reponse = "Ordinateur introuvable."
 
 
-       
+# ==========================
+# TYPE D'ORDINATEUR
+# ==========================
+
+        elif "type" in question and "ordinateur" in question:
+           cursor.execute("""
+        SELECT nom_ordinateur, type_ordinateur
+        FROM ordinateurs
+    """)
+           ordinateurs = cursor.fetchall()
+           trouve = False
+           for o in ordinateurs:
+                if o[0] and o[0].lower() in question:
+                    reponse = f"L'ordinateur {o[0]} est de type {o[1]}."
+                    trouve = True
+                    break
+                if not trouve:
+                    reponse = "Ordinateur introuvable."
 
 
-        # numéro de série
+# ==========================
+# NUMÉRO DE SÉRIE
+# ==========================
+
         elif "numéro de série" in question or "numero de serie" in question:
 
             cursor.execute("""
-            SELECT nom_ordinateur, numero_serie
-            FROM ordinateurs
-            """)
-
+        SELECT nom_ordinateur, numero_serie
+        FROM ordinateurs
+    """)
             ordinateurs = cursor.fetchall()
-
             trouve = False
-
             for o in ordinateurs:
-
                 if o[0] and o[0].lower() in question:
-
                     reponse = f"Le numéro de série de {o[0]} est {o[1]}."
                     trouve = True
                     break
-
-            if not trouve:
-
-                reponse = "Ordinateur introuvable."
-        # informations sur utilisateur
-        elif "informations sur" in question:
-
-            cursor.execute("""
-            SELECT nom_prenom, matricule, service
-            FROM utilisateurs
-            """)
-
-            utilisateurs = cursor.fetchall()
-
-            trouve = False
-
-            for u in utilisateurs:
-
-                if u[0] and u[0].lower() in question:
-
-                    reponse = (
-                        f"Nom : {u[0]}<br>"
-                        f"Matricule : {u[1]}<br>"
-                        f"Service : {u[2]}"
-                    )
-
-                    trouve = True
-                    break
-
-            if not trouve:
-
-                reponse = "Utilisateur introuvable."
+                if not trouve:
+                    reponse = "Ordinateur introuvable."
 
 
-        # nombre de services
-        elif "combien de services" in question:
-
-            cursor.execute("""
-            SELECT COUNT(DISTINCT service)
-            FROM utilisateurs
-            """)
-
-            nb = cursor.fetchone()[0]
-
-            reponse = f"Il existe {nb} service(s)."
-
-
-        # question non reconnue
+# ==========================
+# QUESTION NON RECONNUE
+# ==========================
         else:
-
             reponse = "Je n'ai pas compris votre question."
-       
-       
         conversation.append({
-            "role": "user",
-            "text": question
+                "role": "user",
+                "text": question
         })
 
         conversation.append({
-            "role": "ai",
-            "text": reponse
+                "role": "ai",
+                "text": reponse
         })
 
         session["conversation"] = conversation
 
         conn.close()
-
     return render_template(
-        "assistant.html",
-        conversation=conversation
-    )
+            "assistant.html",
+            conversation=conversation
+        )
 
 
 @app.route("/test")
