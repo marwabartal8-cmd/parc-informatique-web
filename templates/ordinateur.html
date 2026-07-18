@@ -364,6 +364,23 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 
 <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    {% for category, message in messages %}
+
+        {% if category == "success" %}
+        <div style="padding:12px; margin-bottom:15px; border-radius:10px; text-align:center; font-weight:bold; color:white; background:#2E8B57;">
+        {% else %}
+        <div style="padding:12px; margin-bottom:15px; border-radius:10px; text-align:center; font-weight:bold; color:white; background:#C1121F;">
+        {% endif %}
+
+            {{ message }}
+
+        </div>
+
+    {% endfor %}
+{% endif %}
+{% endwith %}
 
 <div class="formulaire">
 
@@ -404,16 +421,51 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 </div>
 <div class="formulaire">
+
     <h2>🔍 Recherche</h2>
-    <form method="GET">
-        
-        <input type="text"
-         name="recherche"
-         placeholder="Rechercher par numéro de série">
-         <button type="submit">
-            Rechercher
-        </button>
-    </form>
+
+    <div style="display:flex; gap:20px;">
+
+        <div style="flex:1;">
+
+            <form method="GET">
+
+                <label>Recherche par numéro de série</label>
+
+                <input
+                    type="text"
+                    name="recherche_numero"
+                    placeholder="Rechercher par numéro de série">
+
+                <button type="submit">
+                    Rechercher
+                </button>
+
+            </form>
+
+        </div>
+
+        <div style="flex:1;">
+
+            <form method="GET">
+
+                <label>Recherche par matricule</label>
+
+                <input
+                    type="text"
+                    name="recherche_matricule"
+                    placeholder="Rechercher par matricule">
+
+                <button type="submit">
+                    Rechercher
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
 </div>
 
 <br>

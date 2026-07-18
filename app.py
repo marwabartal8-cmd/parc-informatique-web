@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, send_file, session
+from flask import Flask, render_template, request, redirect, send_file, session, flash
 import sqlite3
 import os
 import tempfile
@@ -134,6 +134,15 @@ def utilisateurs():
 
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
+        cursor.execute(
+            "SELECT id FROM utilisateurs WHERE matricule = ?",
+            (matricule,)
+            )
+        existe = cursor.fetchone()
+        if existe:
+            conn.close()
+            flash("Erreur : ce matricule existe déjà. Veuillez saisir un matricule différent.", "error")
+            return redirect("/utilisateurs")
 
         cursor.execute("""
         INSERT INTO utilisateurs
@@ -143,7 +152,8 @@ def utilisateurs():
 
         conn.commit()
         conn.close()
-
+        
+        flash("Utilisateur ajouté avec succès.", "success")
         return redirect("/utilisateurs")
 
     recherche = request.args.get("recherche", "")
@@ -252,6 +262,15 @@ def ordinateur():
 
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
+        cursor.execute(
+            "SELECT id FROM utilisateurs WHERE matricule = ?",
+            (matricule,)
+        )
+        utilisateur = cursor.fetchone()
+        if not utilisateur:
+            conn.close()
+            flash("Erreur : aucun utilisateur ne possède ce matricule. Veuillez d'abord créer l'utilisateur.", "error")
+            return redirect("/ordinateur")
 
         cursor.execute("""
         INSERT INTO ordinateurs
@@ -266,24 +285,37 @@ def ordinateur():
 
         conn.commit()
         conn.close()
-
+        
+        flash("Ordinateur ajouté avec succès.", "success")
         return redirect("/ordinateur")
 
-    recherche = request.args.get("recherche", "")
-
+    recherche_numero = request.args.get("recherche_numero", "")
+    recherche_matricule = request.args.get("recherche_matricule", "")
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
+    if recherche_numero:
+        cursor.execute("""
+        SELECT * FROM ordinateurs
+        WHERE numero_serie LIKE ?
+        ORDER BY CAST(matricule AS INTEGER) ASC
+    """, ('%' + recherche_numero + '%',))
 
-    cursor.execute("""
-    SELECT * FROM ordinateurs
-    WHERE numero_serie LIKE ?
-    ORDER BY CAST(matricule AS INTEGER) ASC
-    """, ('%' + recherche + '%',))
+    elif recherche_matricule:
+        cursor.execute("""
+        SELECT * FROM ordinateurs
+        WHERE matricule LIKE ?
+        ORDER BY CAST(matricule AS INTEGER) ASC
+    """, ('%' + recherche_matricule + '%',))
+
+    else:
+        cursor.execute("""
+        SELECT * FROM ordinateurs
+        ORDER BY CAST(matricule AS INTEGER) ASC
+    """)
 
     ordinateurs_liste = cursor.fetchall()
 
     conn.close()
-
     return render_template(
         "ordinateur.html",
         ordinateurs=ordinateurs_liste
