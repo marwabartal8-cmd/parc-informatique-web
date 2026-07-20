@@ -1,10 +1,7 @@
 import sqlite3
 
 conn = sqlite3.connect("parc.db")
-
 cursor = conn.cursor()
-
-cursor.execute("DROP TABLE IF EXISTS utilisateurs")
 
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS utilisateurs (
@@ -24,8 +21,6 @@ CREATE TABLE IF NOT EXISTS ordinateurs (
     matricule TEXT
 )
 """)
-
-
 
 conn.commit()
 conn.close()
