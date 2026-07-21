@@ -58,6 +58,8 @@ def login():
 # -----------------------------
 @app.route("/accueil")
 def accueil():
+    print("Current directory:", os.getcwd())
+    print("Database path:", os.path.abspath("parc.db"))
 
     if "user" not in session:
         return redirect("/")
