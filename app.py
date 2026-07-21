@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, send_file, session, flash
-import sqlite3
+import mysql.connector
 import os
 import tempfile
 
@@ -23,7 +23,12 @@ app.secret_key = "SRM2026"
 # -----------------------------
 # Base de données
 # -----------------------------
-
+DB_CONFIG = {
+    "host": "localhost",
+    "user": "root",
+    "password": "Marwaba",
+    "database": "parc_informatique"
+}
 
 
 # -----------------------------
@@ -61,7 +66,7 @@ def accueil():
 
     if "user" not in session:
         return redirect("/")
-    conn = sqlite3.connect("parc.db")
+    conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
 
     cursor.execute("SELECT COUNT(*) FROM utilisateurs")
@@ -130,10 +135,10 @@ def utilisateurs():
         matricule = request.form["matricule"]
         service = request.form["service"]
 
-        conn = sqlite3.connect("parc.db")
+        conn = mysql.connector.connect(**DB_CONFIG)
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT id FROM utilisateurs WHERE matricule = ?",
+            "SELECT id FROM utilisateurs WHERE matricule = %s",
             (matricule,)
             )
         existe = cursor.fetchone()
@@ -145,7 +150,7 @@ def utilisateurs():
         cursor.execute("""
                       INSERT INTO utilisateurs
                        (nom_prenom, matricule, service)
-                       VALUES (?, ?, ?)
+                       VALUES (%s, %s, %s)
                        """, (nom_prenom, matricule, service))
 
         conn.commit()
@@ -156,12 +161,12 @@ def utilisateurs():
 
     recherche = request.args.get("recherche", "")
 
-    conn = sqlite3.connect("parc.db")
+    conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
 
     cursor.execute("""
     SELECT * FROM utilisateurs
-    WHERE matricule LIKE ?
+    WHERE matricule LIKE %s
     ORDER BY CAST(matricule AS UNSIGNED) ASC
     """, ('%' + recherche + '%',))
 
@@ -182,8 +187,8 @@ def modifier_utilisateur(id):
     if "user" not in session:
         return redirect("/")
 
-    conn = sqlite3.connect("parc.db")
-    cursor = conn.cursor()
+    conn = mysql.connector.connect(**DB_CONFIG)
+    cursor = conn.cursor() 
 
     if request.method == "POST":
 
@@ -193,10 +198,10 @@ def modifier_utilisateur(id):
 
         cursor.execute("""
         UPDATE utilisateurs
-        SET nom_prenom=?,
-            matricule=?,
-            service=?
-        WHERE id=?
+        SET nom_prenom=%s,
+            matricule=%s,
+            service=%s
+        WHERE id=%s
         """, (nom_prenom, matricule, service, id))
 
         conn.commit()
@@ -205,7 +210,7 @@ def modifier_utilisateur(id):
         return redirect("/utilisateurs")
 
     cursor.execute(
-        "SELECT * FROM utilisateurs WHERE id=?",
+        "SELECT * FROM utilisateurs WHERE id=%s",
         (id,)
     )
 
@@ -227,11 +232,11 @@ def supprimer_utilisateur(id):
 
     if "user" not in session:
         return redirect("/")
-    conn = sqlite3.connect("parc.db")
+    conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
 
     cursor.execute(
-        "DELETE FROM utilisateurs WHERE id=?",
+        "DELETE FROM utilisateurs WHERE id=%s",
         (id,)
     )
 
@@ -257,10 +262,10 @@ def ordinateur():
         numero_serie = request.form["numero_serie"]
         matricule = request.form["matricule"]
 
-        conn = sqlite3.connect("parc.db")
+        conn = mysql.connector.connect(**DB_CONFIG)
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT id FROM utilisateurs WHERE matricule = ?",
+            "SELECT id FROM utilisateurs WHERE matricule = %s",
             (matricule,)
         )
         utilisateur = cursor.fetchone()
@@ -272,7 +277,7 @@ def ordinateur():
         cursor.execute("""
         INSERT INTO ordinateurs
         (type_ordinateur, nom_ordinateur, numero_serie, matricule)
-        VALUES (?, ?, ?, ?)
+        VALUES (%s, %s, %s, %s)
         """, (
             type_ordinateur,
             nom_ordinateur,
@@ -288,26 +293,26 @@ def ordinateur():
 
     recherche_numero = request.args.get("recherche_numero", "")
     recherche_matricule = request.args.get("recherche_matricule", "")
-    conn = sqlite3.connect("parc.db")
+    conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
     if recherche_numero:
         cursor.execute("""
         SELECT * FROM ordinateurs
-        WHERE numero_serie LIKE ?
-        ORDER BY CAST(matricule AS INTEGER) ASC
+        WHERE numero_serie LIKE %s
+        ORDER BY CAST(matricule AS UNSIGNED) ASC
     """, ('%' + recherche_numero + '%',))
 
     elif recherche_matricule:
         cursor.execute("""
         SELECT * FROM ordinateurs
-        WHERE matricule LIKE ?
-        ORDER BY CAST(matricule AS INTEGER) ASC
+        WHERE matricule LIKE %s
+        ORDER BY CAST(matricule AS UNSIGNED) ASC
     """, ('%' + recherche_matricule + '%',))
 
     else:
         cursor.execute("""
         SELECT * FROM ordinateurs
-        ORDER BY CAST(matricule AS INTEGER) ASC
+        ORDER BY CAST(matricule AS UNSIGNED) ASC
     """)
 
     ordinateurs_liste = cursor.fetchall()
@@ -328,7 +333,7 @@ def modifier_ordinateur(id):
     if "user" not in session:
         return redirect("/")
 
-    conn = sqlite3.connect("parc.db")
+    conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
 
     if request.method == "POST":
@@ -340,11 +345,11 @@ def modifier_ordinateur(id):
 
         cursor.execute("""
         UPDATE ordinateurs
-        SET type_ordinateur=?,
-            nom_ordinateur=?,
-            numero_serie=?,
-            matricule=?
-        WHERE id=?
+        SET type_ordinateur=%s,
+            nom_ordinateur=%s,
+            numero_serie=%s,
+            matricule=%s
+        WHERE id=%s
         """, (
             type_ordinateur,
             nom_ordinateur,
@@ -359,7 +364,7 @@ def modifier_ordinateur(id):
         return redirect("/ordinateur")
 
     cursor.execute(
-        "SELECT * FROM ordinateurs WHERE id=?",
+        "SELECT * FROM ordinateurs WHERE id=%s",
         (id,)
     )
 
@@ -381,13 +386,13 @@ def supprimer_ordinateur(id):
 
     if "user" not in session:
         return redirect("/")
-    conn = sqlite3.connect("parc.db")
+    conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
 
     
 
     cursor.execute(
-        "DELETE FROM ordinateurs WHERE id=?",
+        "DELETE FROM ordinateurs WHERE id=%s",
         (id,)
     )
 
@@ -404,7 +409,7 @@ def statistiques():
     if "user" not in session:
         return redirect("/")
 
-    conn = sqlite3.connect("parc.db")
+    conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
 
 
@@ -444,7 +449,7 @@ def statistiques():
     FROM utilisateurs u
     LEFT JOIN ordinateurs o
     ON u.matricule = o.matricule
-    ORDER BY CAST(u.matricule AS INTEGER)
+    ORDER BY CAST(u.matricule AS UNSIGNED)
     """, )
 
     liste = cursor.fetchall()
@@ -479,7 +484,7 @@ def telecharger_pdf():
     if "user" not in session:
         return redirect("/")
 
-    conn = sqlite3.connect("parc.db")
+    conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -493,7 +498,7 @@ def telecharger_pdf():
     FROM utilisateurs u
     LEFT JOIN ordinateurs o
     ON u.matricule = o.matricule
-    ORDER BY CAST(u.matricule AS INTEGER)
+    ORDER BY CAST(u.matricule AS UNSIGNED)
     """)
 
     donnees = cursor.fetchall()
@@ -558,7 +563,7 @@ def telecharger_excel():
     if "user" not in session:
         return redirect("/")
 
-    conn = sqlite3.connect("parc.db")
+    conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -660,7 +665,7 @@ def tous_utilisateurs():
     if "user" not in session:
         return redirect("/")
 
-    conn = sqlite3.connect("parc.db")
+    conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -689,7 +694,7 @@ def tous_ordinateurs():
     if "user" not in session:
         return redirect("/")
 
-    conn = sqlite3.connect("parc.db")
+    conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -728,7 +733,7 @@ def assistance():
     if request.method == "POST":
 
         question = request.form["question"].lower()
-        conn = sqlite3.connect("parc.db")
+        conn = mysql.connector.connect(**DB_CONFIG)
         cursor = conn.cursor()
 
        
@@ -912,7 +917,7 @@ def assistance():
                 cursor.execute("""
                                    SELECT COUNT(*)
                                    FROM utilisateurs
-                                    WHERE LOWER(service)=?
+                                    WHERE LOWER(service)=%s
                                    """, (service_trouve.lower(),))
                 nb = cursor.fetchone()[0]
                 reponse = f"Le service {service_trouve} contient {nb} utilisateur(s)."
@@ -961,7 +966,7 @@ def assistance():
                     cursor.execute("""
             SELECT nom_prenom
             FROM utilisateurs
-            WHERE LOWER(service)=?
+            WHERE LOWER(service)=%s
                                        """, (service_trouve.lower(),))
                     resultat = cursor.fetchall()
                     if resultat:
@@ -990,7 +995,7 @@ def assistance():
                     cursor.execute("""
                 SELECT nom_ordinateur
                 FROM ordinateurs
-                WHERE matricule=?
+                WHERE matricule=%s
             """, (u[1],))
                     ordinateur = cursor.fetchone()
                     if ordinateur:
@@ -1020,7 +1025,7 @@ def assistance():
                     cursor.execute("""
                 SELECT nom_prenom
                 FROM utilisateurs
-                WHERE matricule=?
+                WHERE matricule=%s
             """, (o[1],))
                     utilisateur = cursor.fetchone()
                     if utilisateur:
