@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, send_file, session, flash
 import sqlite3
 import os
+print(os.path.abspath("parc.db"))
 import tempfile
 
 from reportlab.platypus import (
@@ -1060,19 +1061,21 @@ def assistance():
 
         elif "numéro de série" in question or "numero de serie" in question:
 
+            mots = question.split()
+            matricule = mots[-1]
+
             cursor.execute("""
-        SELECT nom_ordinateur, numero_serie
-        FROM ordinateurs
-    """)
-            ordinateurs = cursor.fetchall()
-            trouve = False
-            for o in ordinateurs:
-                if o[0] and o[0].lower() in question:
-                    reponse = f"Le numéro de série de {o[0]} est {o[1]}."
-                    trouve = True
-                    break
-                if not trouve:
-                    reponse = "Ordinateur introuvable."
+                SELECT numero_serie
+                FROM ordinateurs
+                WHERE matricule = ?
+            """, (matricule,))
+
+            resultat = cursor.fetchone()
+
+            if resultat:
+                reponse = f"Le numéro de série du matricule {matricule} est : {resultat[0]}"
+            else:
+                reponse = "Aucun ordinateur trouvé pour ce matricule."
 
 
 # ==========================
@@ -1080,7 +1083,7 @@ def assistance():
 # ==========================
         else:
             reponse = "Je n'ai pas compris votre question."
-        conversation.append({
+            conversation.append({
                 "role": "user",
                 "text": question
         })
