@@ -731,6 +731,10 @@ def assistance():
     if request.method == "POST":
 
         question = request.form["question"].lower()
+        conversation.append({
+            "role": "user",
+            "text": question
+        })
         conn = sqlite3.connect("parc.db")
         cursor = conn.cursor()
 
@@ -1083,10 +1087,7 @@ def assistance():
 # ==========================
         else:
             reponse = "Je n'ai pas compris votre question."
-            conversation.append({
-                "role": "user",
-                "text": question
-        })
+        
 
         conversation.append({
                 "role": "ai",
