@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, send_file, session, flash
+from flask import Flask, render_template, request, redirect, send_file, session, flash, Response
 import sqlite3
 import os
+import io
 print(os.path.abspath("parc.db"))
 import tempfile
 
@@ -17,6 +18,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Border, Side
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 app.secret_key = "SRM2026"
@@ -116,7 +118,143 @@ def accueil():
         derniers_utilisateurs=derniers_utilisateurs,
         derniers_ordinateurs=derniers_ordinateurs
     )
+# -----------------------------
+# Graph
+# ----------------------------
+@app.route("/graph_services")
+def graph_services():
 
+    conn = sqlite3.connect("parc.db")
+    cursor = conn.cursor()
+
+    services = [
+        "Informatique",
+        "Ressource humaine",
+        "Comptabilité",
+        "Achat et logistique",
+        "Assainissement",
+        "Eau potable",
+        "Clientèle",
+        "Audit et contrôle"
+    ]
+
+    cursor.execute("""
+        SELECT LOWER(TRIM(service)), COUNT(*)
+        FROM utilisateurs
+        GROUP BY LOWER(TRIM(service))
+    """)
+
+    result = dict(cursor.fetchall())
+    conn.close()
+
+    total = sum(result.values())
+
+    pourcentages = []
+    couleurs = []
+
+    for i, s in enumerate(services):
+
+        n = result.get(s.lower().strip(), 0)
+
+        if total == 0:
+            p = 0
+        else:
+            p = round((n / total) * 100)
+
+        pourcentages.append(p)
+
+        if i % 2 == 0:
+            couleurs.append("#2E8B57")
+        else:
+            couleurs.append("#C1121F")
+
+    # ===========================
+    # Création du graphique
+    # ===========================
+
+    fig, ax = plt.subplots(figsize=(22,12), dpi=350)
+
+    ax.bar(
+        services,
+        pourcentages,
+        color=couleurs,
+        width=0.65
+    )
+
+    ax.set_ylim(0,100)
+
+    ax.set_ylabel(
+        "Pourcentage (%)",
+        fontsize=22,
+        fontweight="bold",
+        
+    )
+
+    ax.set_xlabel(
+        "Services",
+        fontsize=22,
+        fontweight="bold",
+        
+    )
+
+    ax.set_yticks(range(0,101,10))
+
+    # Afficher seulement les axes gauche et bas
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+
+    ax.spines["left"].set_visible(True)
+    ax.spines["bottom"].set_visible(True)
+
+    ax.spines["left"].set_linewidth(2.2)
+    ax.spines["bottom"].set_linewidth(2.2)
+
+    plt.xticks(
+        rotation=15,
+        ha="center",
+        fontsize=22,
+        fontweight="bold"
+    )
+
+    plt.yticks(
+        fontsize=18,
+        fontweight="bold"
+    )
+
+    # Affichage des pourcentages
+    for i, v in enumerate(pourcentages):
+        ax.text(
+            i,
+            v + 2,
+            f"{v}%",
+            ha="center",
+            fontsize=18,
+            fontweight="bold"
+        )
+
+    plt.subplots_adjust(
+        left=0.08,
+        right=0.99,
+        bottom=0.35,
+        top=0.98
+    )
+
+    img = io.BytesIO()
+
+    plt.savefig(
+        img,
+        format="png",
+        dpi=350,
+        bbox_inches="tight",
+        pad_inches=0.3,
+        transparent=True
+    )
+
+    plt.close()
+
+    img.seek(0)
+
+    return Response(img.getvalue(), mimetype="image/png")
 
 # -----------------------------
 # Gestion des utilisateurs

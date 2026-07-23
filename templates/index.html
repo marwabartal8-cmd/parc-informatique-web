@@ -143,7 +143,7 @@ body{
 
 .content{
     flex:1;
-    padding:25px;
+    padding:15px 25px 25px 25px;
 }
 
 .container{
@@ -157,7 +157,7 @@ body{
 header{
     background:transparent;
     box-shadow:none;
-    padding:20px 0;
+    padding:20px 0 15px 0;
 }
 
 .header-content{
@@ -165,6 +165,7 @@ header{
     display:flex;
     justify-content:center;
     align-items:center;
+    margin-top:-25px;
 }
 
 .header-text{
@@ -193,21 +194,21 @@ header{
 .hero{
     background:#ffffff;
     border-radius:18px;
-    padding:30px;
+    padding:18px 24px;
     box-shadow:0 4px 15px rgba(0,0,0,.06);
-    margin-bottom:25px;
+    margin-bottom:20px;
 }
 
 .hero h2{
     color:#2e7d32;
-    font-size:28px;
-    margin-bottom:12px;
+    font-size:22px;
+    margin-bottom:8px;
 }
 
 .hero p{
     color:#666;
-    font-size:16px;
-    line-height:1.7;
+    font-size:15px;
+    line-height:1.6;
 }
 /* ===================================================== */
 /* CARDS */
@@ -333,17 +334,50 @@ header{
 
 .tables{
     display:grid;
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:1fr 1fr;
     gap:20px;
     margin-top:25px;
+    align-items:start;
 }
 
 .presentation{
     background:#ffffff;
     border-radius:18px;
-    padding:22px;
+    padding:20px;
     box-shadow:0 4px 15px rgba(0,0,0,.06);
     border:1px solid #eeeeee;
+    height:auto;
+}
+.graph-card{
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    min-height:560px;
+
+    padding:20px;
+
+}
+
+.graph-card h2{
+
+    width:100%;
+    text-align:left;
+    margin-bottom:15px;
+
+}
+
+.graph-img{
+
+    width:100%;
+    height:470px;
+
+    display:block;
+
+    object-fit:fill;
+
 }
 
 .presentation h2{
@@ -473,6 +507,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     <h3>Informatique</h3>
 
     <p>SRM Fès-Meknès</p>
+    <p style="margin-top:4px;font-size:12px;color:#2E8B57;">
+    Agence de Taza
+    </p>
 
 </div>
 
@@ -482,6 +519,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
    <a href="/assistance"><i class="fa-solid fa-robot"></i> Assistance IA</a>
    <a href="/export_excel"><i class="fa-solid fa-table"></i> Export Excel</a>
    <a href="/logout">
+
     <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
 </a>
 
@@ -502,7 +540,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                 <span style="color:#C1121F;">Informatique</span>
             </h1>
 
-            <p>Société Régionale Multiservices Fès-Meknès</p>
+            <p>Société Régionale Multiservices Fès-Meknès - Agence de Taza</p>
 
         </div>
 
@@ -520,7 +558,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
         <p>
             Bienvenue dans l'application de gestion du parc informatique
-            de la Société Régionale Multiservices Fès-Meknès.
+            de la Société Régionale Multiservices Fès-Meknès - Agence de Taza.
         </p>
 
     </section>
@@ -606,9 +644,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
             <a href="/tous_utilisateurs"
                style="text-decoration:none;color:#C1121F;font-weight:bold;">
-
                 Voir tout →
-
             </a>
 
         </div>
@@ -626,13 +662,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
             <tbody>
 
             {% for u in derniers_utilisateurs %}
-
                 <tr>
                     <td>{{ u[0] }}</td>
                     <td>{{ u[1] }}</td>
                     <td>{{ u[2] }}</td>
                 </tr>
-
             {% endfor %}
 
             </tbody>
@@ -641,52 +675,35 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
     </div>
 
-    <!-- Derniers ordinateurs -->
+
+    <!-- Graphique -->
+
     <div class="presentation">
 
-        <div style="display:flex;justify-content:space-between;align-items:center;">
+    <h2>Répartition des utilisateurs par service</h2>
 
-            <h2>Derniers ordinateurs ajoutés</h2>
+    <div style="
+        width:100%;
+        height:290px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    ">
 
-            <a href="/tous_ordinateurs"
-               style="text-decoration:none;color:#2E8B57;font-weight:bold;">
-
-                Voir tout →
-
-            </a>
-
-        </div>
-
-        <table>
-
-            <thead>
-                <tr>
-                    <th>Nom PC</th>
-                    <th>Numéro de série</th>
-                    <th>Type</th>
-                    <th>Matricule</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-            {% for o in derniers_ordinateurs %}
-
-                <tr>
-                    <td>{{ o[0] }}</td>
-                    <td>{{ o[1] }}</td>
-                    <td>{{ o[2] }}</td>
-                    <td>{{ o[3] }}</td>
-                </tr>
-
-            {% endfor %}
-
-            </tbody>
-
-        </table>
+        <img
+            src="/graph_services"
+            alt="Graphique"
+            style="
+                width:100%;
+                height:100%;
+                object-fit:contain;
+                display:block;
+            "
+        >
 
     </div>
 
+</div>
 </div>
 
 <footer>
